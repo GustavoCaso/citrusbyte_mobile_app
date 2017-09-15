@@ -11,7 +11,7 @@ const Index = ({ devices }) =>
     <ul className="l-list">
       { devices.map((device) => (
         <li key={device.id} className='l-item'>
-          <Link as={`/s/${device.id}`} href={`/show?data=${JSON.stringify(device)}`}>
+          <Link as={`/s/${device.id}`} href={`/show?id=${device.id}`}>
             <a className="o-flex">
               <span className="o-flex-1">{device.name}</span>
               <img className="s-image" src="/static/right_caret.png" />
@@ -64,8 +64,6 @@ const Index = ({ devices }) =>
 Index.getInitialProps = async () => {
   const res = await fetch('https://citrusbyte-admin.herokuapp.com/api/v1/devices')
   const data = await res.json()
-
-  console.log(`Show data fetched. Count: ${data.length}`)
 
   return {
     devices: data

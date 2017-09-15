@@ -1,3 +1,4 @@
+import fetch from 'isomorphic-unfetch'
 import Controls from '../components/Controls'
 import Link from 'next/link'
 import Meta from '../components/Meta'
@@ -40,9 +41,11 @@ const Show = (props) => (
 )
 
 Show.getInitialProps = async function (context) {
-  const { data } = context.query
+  const { id } = context.query
+  const res = await fetch(`https://citrusbyte-admin.herokuapp.com/api/v1/devices/${id}`)
+  const data = await res.json()
 
-  return JSON.parse(data)
+  return data
 }
 
 export default Show
