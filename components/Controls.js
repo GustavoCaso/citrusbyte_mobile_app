@@ -11,7 +11,7 @@ export default class Controls extends React.Component {
     this.state = props;
   }
 
-  onClick = async (id, type, name, value) => {
+  onClick = async (id, type, name, value, api_verb, api_url) => {
     const res = await fetch(
       `https://citrusbyte-admin.herokuapp.com/api/v1/devices/${id}`, {
         method: 'PUT',
@@ -20,9 +20,13 @@ export default class Controls extends React.Component {
     )
     const data = await res.json()
     this.setState(data)
+
+    if(api_verb && api_url) {
+      fetch(api_url, { method: api_verb.toUpperCase() })
+    }
   }
 
-  resolveComponent = (id, control, index) => {
+  resolveComponent = (id, api_verb, api_url, control, index) => {
     const ControlComponent = {
       slider: Slider,
       button: Button,
@@ -32,7 +36,13 @@ export default class Controls extends React.Component {
     return (
       <div>
         <h2>{control.name}</h2>
-        <Component key={index} onClick={(value) => this.onClick(id, control.type, control.name, value)} id={id} value={control.value} options={control.options}/>
+        <Component
+          key={index}
+          onClick={(value) => this.onClick(id, control.type, control.name, value, api_verb, api_url)}
+          id={id}
+          value={control.value}
+          options={control.options}
+        />
       </div>
     )
   }
@@ -42,7 +52,7 @@ export default class Controls extends React.Component {
       <div>
         <ul>
           {this.state.data.map((control, index) => (
-            this.resolveComponent(this.state.id, control, index)
+            this.resolveComponent(this.state.id, this.state.api_verb, this.state.api_url, control, index)
           ))}
         </ul>
       </div>
