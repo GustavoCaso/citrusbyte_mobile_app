@@ -7,7 +7,8 @@ export default (props) => (
     </Head>
     <style jsx global>{`
       body {
-        margin: 0
+        margin: 0;
+        background-color: #f7f7f7;
       }
     `}</style>
     {props.children}
